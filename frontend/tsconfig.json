@@ -1,0 +1,34 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": ".dist",
+    "types": [
+      "vite/client"
+    ],
+    "paths": {
+      "@models/*": [
+        "./src/models/*"
+      ],
+      "@settings/*": [
+        "./src/settings/*"
+      ],
+      "@data/*": [
+        "./src/data/*"
+      ],
+      "@contexts/*": [
+        "./src/contexts/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@pages/*": [
+        "./src/pages/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ]
+}

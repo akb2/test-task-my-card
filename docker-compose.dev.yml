@@ -1,0 +1,166 @@
+services:
+
+  postgres:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_INTERNAL_PORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  adminer:
+    image: adminer:latest
+    restart: unless-stopped
+    ports:
+      - "${ADMINER_PORT}:${ADMINER_INTERNAL_PORT}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app_network
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+      RABBITMQ_VHOST: ${RABBITMQ_VHOST}
+    ports:
+      - "${RABBITMQ_PORT}:${RABBITMQ_INTERNAL_PORT}"
+      - "${RABBITMQ_MANAGEMENT_PORT}:${RABBITMQ_MANAGEMENT_INTERNAL_PORT}"
+      - "${RABBITMQ_STREAM_PORT}:${RABBITMQ_STREAM_INTERNAL_PORT}"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - app_network
+    command: >
+      sh -c "
+        rabbitmq-plugins enable --offline rabbitmq_stream &&
+        rabbitmq-server
+      "
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  proxy:
+    image: traefik:latest
+    restart: unless-stopped
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.backend.address=:${BACKEND_PROXY_PORT}"
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PROXY_PORT}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - app_network
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.dev
+      secrets:
+        - npmrc
+    working_dir: /app
+    # restart: unless-stopped
+    environment:
+      # PostgreSQL configuration
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: ${POSTGRES_INTERNAL_PORT}
+      # RabbitMQ configuration
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+      RABBITMQ_STREAM_PORT: ${RABBITMQ_STREAM_INTERNAL_PORT}
+      RABBITMQ_VHOST: ${RABBITMQ_VHOST}
+    expose:
+      - "${BACKEND_INTERNAL_PORT}"
+    volumes:
+      - ${USERPROFILE}/.npmrc:/root/.npmrc:ro
+      - ./.npmrc:/app/.npmrc:ro
+    command: pnpm --filter ./backend dev
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.entrypoints=backend"
+      - "traefik.http.routers/backend.rule=PathPrefix(`/`)"
+      - "traefik.http.services.backend.loadbalancer.server.port=${BACKEND_INTERNAL_PORT}"
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          ignore:
+            - "**/node_modules/"
+            - "**/.pnpm-store/"
+            - ".git/"
+            - "pnpm-lock.yaml"
+        - action: rebuild
+          path: pnpm-lock.yaml
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - app_network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile.dev
+      secrets:
+        - npmrc
+    working_dir: /app
+    environment:
+      FRONTEND_INTERNAL_PORT: ${FRONTEND_INTERNAL_PORT}
+      VITE_BACKEND_URL: "http://localhost:${BACKEND_PORT}"
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_INTERNAL_PORT}"
+    command: pnpm --filter ./frontend dev
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          ignore:
+            - "**/node_modules/"
+            - "**/.pnpm-store/"
+            - ".git/"
+            - "pnpm-lock.yaml"
+        - action: rebuild
+          path: pnpm-lock.yaml
+    depends_on:
+      - proxy
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    name: ${DOCKER_NETWORK}
+    driver: bridge
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
+
+secrets:
+  npmrc:
+    file: ${USERPROFILE}/.npmrc

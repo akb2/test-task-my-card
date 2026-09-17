@@ -1,0 +1,51 @@
+{
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "files.trimTrailingWhitespace": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "never",
+    "source.organizeImports": "never",
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.prettier": "never"
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "eslint.lintTask.enable": false,
+  "eslint.enable": true,
+  "eslint.debug": true,
+  "eslint.run": "onType",
+  "eslint.workingDirectories": [
+    {
+      "directory": ".",
+      "changeProcessCWD": true
+    }
+  ],
+  "js/ts.tsserver.experimental.enableProjectDiagnostics": false,
+  "js/ts.tsserver.automaticTypeAcquisition.enabled": true,
+  "js/ts.preferences.importModuleSpecifier": "shortest",
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.pnpm-store/**": true,
+    "**/.git/**": true,
+    "**/dist/**": true,
+    "**/.dist/**": true,
+    "**/build/**": true,
+    "**/.turbo/**": true,
+    "**/.vite/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.pnpm-store": true,
+    "**/dist": true,
+    "**/.dist": true,
+    "**/build": true,
+    "**/logs": true
+  },
+  "containers.commands.composeUp": "${composeCommand} ${configurationFile} up --scale backend=2 --watch ${build}",
+  "containers.commands.composeUpSubset": "${composeCommand} ${profileList} ${configurationFile} up --scale backend=2 --watch ${build} ${serviceList}"
+}

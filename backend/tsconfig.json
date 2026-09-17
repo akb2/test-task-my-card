@@ -1,0 +1,22 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": ".dist",
+    "paths": {
+      "@data/*": [
+        "./src/data/*"
+      ],
+      "@controllers/*": [
+        "./src/controllers/*"
+      ],
+      "@modules/*": [
+        "./src/modules/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ]
+}
