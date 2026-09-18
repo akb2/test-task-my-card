@@ -1,3 +1,4 @@
+import { RouterComponent } from "@components/core/RouterComponent";
 import { LayoutComponent } from "@components/layout/LayoutComponent";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
@@ -8,4 +9,8 @@ if (!rootElement) {
   throw new Error('Root element "#root" not found');
 }
 
-createRoot(rootElement).render(<StrictMode></StrictMode>);
+createRoot(rootElement).render(
+  <StrictMode>
+    <RouterComponent />
+  </StrictMode>,
+);
