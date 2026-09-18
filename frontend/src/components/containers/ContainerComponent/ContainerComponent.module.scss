@@ -9,14 +9,28 @@ $containerMaxWidths: (
   huge: 1800
 );
 
+$containerSpacingSizes: (
+  none: 0,
+  small: 15,
+  medium: 30,
+  large: 45,
+  extra-large: 60
+);
+
 $containerHorizontalPadding: 15;
 
 .container {
+  width: 100%;
+  margin: 0 auto;
+  padding-inline: #{$containerHorizontalPadding}px;
+
   @include screens.adaptiveFor($containerMaxWidths) using ($maxWidth) {
     max-width: #{$maxWidth}px;
   }
 
-  width: 100%;
-  margin: 0 auto;
-  padding-inline: #{$containerHorizontalPadding}px;
+  @each $spacingName, $spacingValue in $containerSpacingSizes {
+    &.#{$spacingName} {
+      padding-block: #{$spacingValue}px;
+    }
+  }
 }
