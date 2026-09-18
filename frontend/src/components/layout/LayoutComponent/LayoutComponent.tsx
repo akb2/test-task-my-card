@@ -1,3 +1,3 @@
 import { FC } from "react";
 
-export const LayoutComponent:FC=()=>null;
+export const LayoutComponent: FC = () => null;
