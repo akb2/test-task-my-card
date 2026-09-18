@@ -1,10 +1,29 @@
+@use "@styles/colors";
+
 .layout {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto minmax(1px, 1fr);
   min-height: 100dvh;
+  max-height: 100dvh;
 }
 
 .content {
-  flex: 1;
-  overflow-y: scroll;
+  flex-grow: 1;
+  padding: 5px;
+  background-color: colors.$primaryColor;
+  display: flex;
+  flex-direction: column;
+
+  &__helper {
+    border-radius: 5px;
+    background-color: colors.$contentBackgroundColor;
+    flex-grow: 1;
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+  }
 }
