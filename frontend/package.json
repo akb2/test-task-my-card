@@ -2,6 +2,9 @@
   "name": "@test-task-my-card/frontend",
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "dev": "vite --config vite.config.dev.ts"
+  },
   "dependencies": {
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
