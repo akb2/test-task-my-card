@@ -24,11 +24,17 @@
       ],
       "@pages/*": [
         "./src/pages/*"
+      ],
+      "@styles/*": [
+        "./assets/styles/*"
       ]
     }
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.tsx"
+    "src/**/*.tsx",
+    "src/**/*.scss",
+    "assets/**/*.scss",
+    "vite.config.dev.ts"
   ]
 }

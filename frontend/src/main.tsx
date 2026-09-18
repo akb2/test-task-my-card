@@ -1,7 +1,8 @@
 import { RouterComponent } from "@components/core/RouterComponent";
-import { LayoutComponent } from "@components/layout/LayoutComponent";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+
+import "./styles.scss";
 
 const rootElement = document.getElementById("root");
 

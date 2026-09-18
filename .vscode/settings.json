@@ -5,7 +5,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll": "never",
-    "source.organizeImports": "never",
+    "source.organizeImports": "always",
     "source.fixAll.eslint": "explicit",
     "source.fixAll.prettier": "never"
   },

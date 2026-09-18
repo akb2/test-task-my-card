@@ -1,2 +1,22 @@
+@use "sass:list";
+
+$containerMaxWidths: (
+  extra-small: 400,
+  small: 400,
+  medium: 600,
+  large: 900,
+  extra-large: 1200,
+  huge: 1800
+);
+
+$containerHorizontalPadding: 15;
+
 .container {
+  @include screens.adaptiveFor($containerMaxWidths) using ($maxWidth) {
+    max-width: #{$maxWidth}px;
+  }
+
+  width: 100%;
+  margin: 0 auto;
+  padding-inline: #{$containerHorizontalPadding}px;
 }

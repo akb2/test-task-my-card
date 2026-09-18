@@ -1,0 +1,26 @@
+@use "sass:map";
+@use "sass:list";
+
+$breakpoints: () !default;
+
+@mixin adaptiveFor($values...) {
+  @each $screen, $size in $breakpoints {
+    @media screen and (min-width: #{$size}px) {
+      $datas: ();
+      $skipCounter: list.length($values);
+      @each $value in $values {
+        $data: "";
+        @if (map.has-key($value, $screen)) {
+          $data: map.get($value, $screen);
+        } @else if(map.has-key($value, default)) {
+          $data: map.get($value, default);
+          $skipCounter: $skipCounter - 1;
+        }
+        $datas: list.append($datas, $data);
+      }
+      @if ($skipCounter != 0 or $screen != default) {
+        @content ($datas...);
+      }
+    }
+  }
+}
