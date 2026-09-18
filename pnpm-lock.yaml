@@ -140,8 +140,8 @@ importers:
         specifier: ^22.20.3
         version: 22.20.3
       typescript:
-        specifier: ^7.0.2
-        version: 7.0.2
+        specifier: ^6.0.3
+        version: 6.0.3
 
   core:
     devDependencies:
