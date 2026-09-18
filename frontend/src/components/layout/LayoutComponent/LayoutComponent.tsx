@@ -3,9 +3,13 @@ import { HeaderComponent } from "@components/layout/HeaderComponent";
 import { LayoutComponentProps } from "./LayoutComponent.types";
 import styles from "./LayoutComponent.module.scss";
 
-export const LayoutComponent: FC<LayoutComponentProps> = ({ children }) => (
+export const LayoutComponent: FC<LayoutComponentProps> = ({
+  children,
+  $headerTitle,
+  $headerSubtitle,
+}) => (
   <div className={styles.layout}>
-    <HeaderComponent />
+    <HeaderComponent $title={$headerTitle} $subtitle={$headerSubtitle} />
     <div className={styles.content}>
       <div className={styles.content__helper}>{children}</div>
     </div>

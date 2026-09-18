@@ -1,16 +1,30 @@
 @use "@styles/colors";
+@use "@styles/vars";
 
-$headerHeight: 60px;
+$headerHeight: calc(#{vars.$headerHeight} + vars.$pageContentBorderSpacing);
 
 .header {
   height: $headerHeight;
   min-height: $headerHeight;
   max-height: $headerHeight;
   flex-basis: $headerHeight;
+  padding-top: vars.$pageContentBorderSpacing;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 15px;
   background-color: colors.$primaryColor;
   color: colors.$primaryColorContrast;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.sub-title {
+  display: block;
+  font-size: 1rem;
+  font-weight: 400;
 }

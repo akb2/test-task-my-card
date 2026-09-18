@@ -1,4 +1,7 @@
 @use "sass:list";
+@use "sass:map";
+@use "@styles/colors";
+@use "@styles/vars";
 
 $containerMaxWidths: (
   extra-small: 400,
@@ -17,20 +20,51 @@ $containerSpacingSizes: (
   extra-large: 60
 );
 
-$containerHorizontalPadding: 15;
+$containerBackgroundVariants: (
+  default: (
+    background: transparent,
+    text: inherit,
+    border: colors.$contentBackgroundColorDefaultBorder
+  ),
+  extra-light: (
+    background: colors.$contentBackgroundColorLight,
+    text: colors.$contentBackgroundColorLightContrast,
+    border: colors.$contentBackgroundColorLightBorder
+  ),
+  light: (
+    background: colors.$contentBackgroundColor,
+    text: colors.$contentBackgroundColorContrast,
+    border: colors.$contentBackgroundColorBorder
+  )
+);
 
 .container {
   width: 100%;
   margin: 0 auto;
-  padding-inline: #{$containerHorizontalPadding}px;
+
+  &__background {
+    display: block;
+    width: 100%;
+  }
 
   @include screens.adaptiveFor($containerMaxWidths) using ($maxWidth) {
-    max-width: #{$maxWidth}px;
+    max-width: calc(#{$maxWidth}px - #{vars.$containerHorizontalPadding * 2});
   }
 
   @each $spacingName, $spacingValue in $containerSpacingSizes {
     &.#{$spacingName} {
       padding-block: #{$spacingValue}px;
+    }
+  }
+
+  @each $backgroundName, $backgroundValue in $containerBackgroundVariants {
+    &__background.#{$backgroundName} {
+      background-color: #{map.get($backgroundValue, background)};
+      color: #{map.get($backgroundValue, text)};
+
+      & + & > .container {
+        border-top: 1px solid #{map.get($backgroundValue, border)};
+      }
     }
   }
 }
