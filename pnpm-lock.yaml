@@ -161,6 +161,9 @@ importers:
 
   frontend:
     dependencies:
+      '@akb2/types-tools':
+        specifier: ^1.2.1
+        version: 1.2.1(@akb2/math@1.1.0)
       react:
         specifier: ^19.3.0
         version: 19.3.0
@@ -203,6 +206,14 @@ importers:
         version: 3.11.0(react@19.3.0)
 
 packages:
+
+  '@akb2/math@1.1.0':
+    resolution: {integrity: sha512-YQqyX5a8QCWvjH0HTndHM2S+qaqBSPt/23Jp5lGbwFLf5xNYt2lPbCkIl8IQzV6AtWpZPpghw2itxGM1UDbGpQ==}
+
+  '@akb2/types-tools@1.2.1':
+    resolution: {integrity: sha512-SQ3CP6uwPSYsatr4WdnCQMsSH6wXhbBZL3qgSyAw/AidtU6HAGUWpmhMAvMfajpe2TCkq6b6Pniml73Z8rVVKA==}
+    peerDependencies:
+      '@akb2/math': '>=1 <2'
 
   '@angular-devkit/core@22.1.8':
     resolution: {integrity: sha512-34lsgg2FwMVBX7nR/ZqzRUcdvdYPvSB8XAEr2GudXAyZwLI9ehzfQlagAWR/gEb8p4uCFZW0r7uU0toxydq4Rw==}
@@ -2213,6 +2224,12 @@ packages:
     engines: {node: '>=18'}
 
 snapshots:
+
+  '@akb2/math@1.1.0': {}
+
+  '@akb2/types-tools@1.2.1(@akb2/math@1.1.0)':
+    dependencies:
+      '@akb2/math': 1.1.0
 
   '@angular-devkit/core@22.1.8(chokidar@5.0.0)':
     dependencies:
