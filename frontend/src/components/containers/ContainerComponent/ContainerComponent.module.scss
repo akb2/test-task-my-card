@@ -26,15 +26,15 @@ $containerBackgroundVariants: (
     text: inherit,
     border: colors.$contentBackgroundColorDefaultBorder
   ),
-  extra-light: (
+  light: (
     background: colors.$contentBackgroundColorLight,
     text: colors.$contentBackgroundColorLightContrast,
     border: colors.$contentBackgroundColorLightBorder
   ),
-  light: (
-    background: colors.$contentBackgroundColor,
-    text: colors.$contentBackgroundColorContrast,
-    border: colors.$contentBackgroundColorBorder
+  dark: (
+    background: colors.$contentBackgroundColorDark,
+    text: colors.$contentBackgroundColorDarkContrast,
+    border: colors.$contentBackgroundColorDarkBorder
   )
 );
 
@@ -45,6 +45,10 @@ $containerBackgroundVariants: (
   &__background {
     display: block;
     width: 100%;
+
+    &.full-height {
+      min-height: 100%;
+    }
   }
 
   @include screens.adaptiveFor($containerMaxWidths) using ($maxWidth) {

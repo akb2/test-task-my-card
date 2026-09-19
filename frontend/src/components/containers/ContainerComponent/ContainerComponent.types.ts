@@ -11,11 +11,12 @@ enum ContainerSpacingSize {
 
 enum ContainerBackgoundVariant {
   Default = "default",
-  ExtraLight = "extra-light",
   Light = "light",
+  Dark = "dark",
 }
 
 export interface ContainerComponentProps extends PropsWithChildren {
   $spacing?: EnumValues<ContainerSpacingSize>;
   $background?: EnumValues<ContainerBackgoundVariant>;
+  $fullHeight?: boolean;
 }

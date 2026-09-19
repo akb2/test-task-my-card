@@ -7,12 +7,19 @@ export const ContainerComponent: FC<ContainerComponentProps> = ({
   children,
   $spacing,
   $background,
+  $fullHeight,
 }) => {
   const containerSpacingClass = $spacing ? styles[$spacing] : styles.medium;
   const containerBackgroundClass = $background ? styles[$background] : styles.default;
+  const containerFullHeightClass = $fullHeight ? styles["full-height"] : "";
+  const containerBackgroundTotalClass = classes(
+    styles.container__background,
+    containerBackgroundClass,
+    containerFullHeightClass,
+  );
 
   return (
-    <div className={classes(styles.container__background, containerBackgroundClass)}>
+    <div className={containerBackgroundTotalClass}>
       <div className={classes(styles.container, containerSpacingClass)}>{children}</div>
     </div>
   );
