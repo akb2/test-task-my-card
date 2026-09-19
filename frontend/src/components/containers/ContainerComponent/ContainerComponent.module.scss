@@ -45,10 +45,10 @@ $containerBackgroundVariants: (
   &__background {
     display: block;
     width: 100%;
+  }
 
-    &.full-height {
-      min-height: 100%;
-    }
+  &.full-height {
+    flex-grow: 1;
   }
 
   @include screens.adaptiveFor($containerMaxWidths) using ($maxWidth) {
@@ -71,4 +71,12 @@ $containerBackgroundVariants: (
       }
     }
   }
+}
+
+.full-height {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
 }

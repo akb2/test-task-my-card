@@ -20,7 +20,9 @@ export const ContainerComponent: FC<ContainerComponentProps> = ({
 
   return (
     <div className={containerBackgroundTotalClass}>
-      <div className={classes(styles.container, containerSpacingClass)}>{children}</div>
+      <div className={classes(styles.container, containerSpacingClass, containerFullHeightClass)}>
+        {children}
+      </div>
     </div>
   );
 };
